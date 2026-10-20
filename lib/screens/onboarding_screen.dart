@@ -57,11 +57,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (_isFinishing) return;
     _isFinishing = true;
 
-    // Android 12 ve üzeri için Bluetooth izinleri, daha eskiler için Konum izni gerekebilir.
+    // Android 12+ "Yakındaki cihazlar" izinleri; eski sürümlerde bunlar verilmiş sayılır.
+    // Konum izni burada istenmiyor: Android 12+'da gerekmiyor (manifestte neverForLocation),
+    // Android 11 ve altında ise eklenti cihazları listelerken kendisi istiyor.
     Map<Permission, PermissionStatus> statuses = await [
       Permission.bluetoothScan,
       Permission.bluetoothConnect,
-      Permission.location,
     ].request();
 
     // İzin verilmese de ana ekrana geçiyoruz: Bağlantı ekranı izni tekrar isteyebiliyor.
